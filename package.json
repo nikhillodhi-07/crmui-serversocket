@@ -3,10 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next run",
-    "lint": "next lint"
+    "start": "node socketserver.js"
   },
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
