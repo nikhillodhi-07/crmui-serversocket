@@ -1,9 +1,16 @@
-// socket-server.js
-const { Server } = require('socket.io');
+const express = require('express');
 const http = require('http');
+const { Server } = require('socket.io');
 
-const server = http.createServer();
+const app = express();
+const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: '*' } });
+const PORT = process.env.PORT || 3001;
+
+// Health check endpoint for Render
+app.get('/', (req, res) => {
+  res.send('Socket.IO server is running');
+});
 
 // Helper to normalize room names (lowercase/trim/sort)
 function normalizeName(name) {
@@ -14,6 +21,8 @@ function getRoomName(userA, userB) {
 }
 
 io.on('connection', (socket) => {
+  console.log('[Socket.IO] User connected:', socket.id);
+
   socket.on('joinRoom', ({ room }) => {
     console.log('[Socket.IO] joinRoom:', room, 'Socket:', socket.id);
     socket.join(room);
@@ -30,8 +39,12 @@ io.on('connection', (socket) => {
     console.log('[Socket.IO] leaveRoom:', room, 'Socket:', socket.id);
     socket.leave(room);
   });
+
+  socket.on('disconnect', () => {
+    console.log('[Socket.IO] User disconnected:', socket.id);
+  });
 });
 
-server.listen(3001, () => {
-  console.log('Socket.IO server running on port 3001');
+server.listen(PORT, () => {
+  console.log(`Socket.IO server running on port ${PORT}`);
 });
