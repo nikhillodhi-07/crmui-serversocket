@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node socketserver.js",
+    "start": "node socket-server.js",
     "build": "echo 'No build needed'"
   },
   "dependencies": {
